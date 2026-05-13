@@ -4,14 +4,24 @@ import { getCollection } from 'astro:content';
 const recipes = await getCollection('recipes');
 const products = await getCollection('kitchen-finds');
 
-const featuredRecipe = recipes[0];
-const featuredProduct = products.find(p => p.id === 'chefs-knife-set.md') || products[0];
+// Fix #3: Match ID without extension
+const featuredProduct = products.find(p => p.id === 'chefs-knife-set') 
+  || products.find(p => p.data.featured) 
+  || products[0];
+
+// Fix #4: Show newest featured recipe, sorted by publishDate descending
+const featuredRecipe = recipes
+  .filter(r => r.data.featured)
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())[0]
+  || recipes.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())[0];
+
+const recipeSlug = featuredRecipe.id.replace(/\.mdx?$/, '');
 ---
 
 <section class="mt-8 mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
   
   <!-- Left: Featured Recipe -->
-  <a href={`/recipes/${featuredRecipe.id}`} class="relative rounded-[2rem] overflow-hidden h-[500px] group cursor-pointer premium-shadow">
+  <a href={`/recipes/${recipeSlug}`} class="relative rounded-[2rem] overflow-hidden h-[500px] group cursor-pointer premium-shadow">
     <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" style={`background-image: url('${featuredRecipe.data.image}');`}></div>
     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
     
@@ -33,8 +43,8 @@ const featuredProduct = products.find(p => p.id === 'chefs-knife-set.md') || pro
     </div>
   </a>
 
-  <!-- Right: Featured Product Highlight -->
-  <a href={featuredProduct.data.affiliateLink} target="_blank" rel="noopener noreferrer" class="relative rounded-[2rem] overflow-hidden h-[500px] flex group premium-shadow">
+  <!-- Right: Featured Product Highlight — links to internal review page -->
+  <a href={`/kitchen-finds/${featuredProduct.id.replace(/\.mdx?$/, '')}`} class="relative rounded-[2rem] overflow-hidden h-[500px] flex group premium-shadow">
     <!-- Split background -->
     <div class="w-[45%] bg-brand-green h-full relative overflow-hidden">
       <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
@@ -49,13 +59,13 @@ const featuredProduct = products.find(p => p.id === 'chefs-knife-set.md') || pro
         </div>
         <h3 class="text-3xl font-serif font-bold mb-6 leading-tight drop-shadow-sm">Upgrade Your Kitchen Arsenal</h3>
         <span class="inline-block bg-white text-brand-green font-bold py-3 px-6 rounded-xl text-sm group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300 shadow-md">
-          Shop Now
+          Read Review
         </span>
       </div>
       
       <!-- Center Image -->
       <div class="absolute left-[35%] w-[45%] flex justify-center z-20 group-hover:-translate-y-2 group-hover:scale-105 transition-all duration-500">
-        <img src={featuredProduct.data.image} alt="Featured Product" class="drop-shadow-2xl max-h-[350px] object-contain" />
+        <img src={featuredProduct.data.image} alt={featuredProduct.data.title} class="drop-shadow-2xl max-h-[350px] object-contain" />
       </div>
 
       <!-- Right side text (on beige) -->

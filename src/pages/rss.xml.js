@@ -11,7 +11,7 @@ export async function GET(context) {
 			title: recipe.data.title,
 			pubDate: recipe.data.publishDate,
 			description: recipe.data.description,
-			link: `/recipes/${recipe.id}/`,
+			link: `/recipes/${recipe.id.replace(/\.mdx?$/, '')}/`,
 		})),
 	});
 }

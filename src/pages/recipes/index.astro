@@ -1,0 +1,109 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RecipeCard from '../../components/RecipeCard.astro';
+import { getCollection } from 'astro:content';
+
+const recipes = await getCollection('recipes');
+
+// Extract unique categories
+const categories = [...new Set(recipes.map(recipe => recipe.data.category))].sort();
+---
+
+<Layout title="All Recipes - The Modern Pantry">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-text mb-4">Our Recipes</h1>
+      <p class="text-lg text-gray-500 font-sans max-w-2xl mx-auto">
+        Explore our curated collection of delicious, easy-to-make recipes.
+      </p>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="flex flex-wrap justify-center gap-3 mb-12">
+      <button class="category-btn bg-brand-green text-white px-6 py-2 rounded-full font-bold text-sm tracking-wider uppercase transition-colors shadow-sm" data-category="all">
+        All
+      </button>
+      {categories.map(category => (
+        <button class="category-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 px-6 py-2 rounded-full font-bold text-sm tracking-wider uppercase transition-colors shadow-sm" data-category={category}>
+          {category}
+        </button>
+      ))}
+    </div>
+
+    <!-- Recipes Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="recipes-grid">
+      {recipes.map(recipe => (
+        <div class="recipe-item transition-all duration-300" data-category={recipe.data.category}>
+          <RecipeCard recipe={recipe} />
+        </div>
+      ))}
+    </div>
+    
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden text-center py-20">
+      <p class="text-xl text-gray-500 font-serif">No recipes found in this category.</p>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  function initFilters() {
+    const buttons = document.querySelectorAll('.category-btn');
+    const items = document.querySelectorAll('.recipe-item');
+    const emptyState = document.getElementById('empty-state');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all
+        buttons.forEach(b => {
+          b.classList.remove('bg-brand-green', 'text-white');
+          b.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+        });
+        
+        // Add active class to clicked
+        btn.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+        btn.classList.add('bg-brand-green', 'text-white');
+
+        const selectedCategory = btn.getAttribute('data-category');
+        let visibleCount = 0;
+
+        items.forEach(item => {
+          // Type assertion for HTMLElement to access style
+          const htmlItem = item as HTMLElement;
+          const itemCategory = htmlItem.getAttribute('data-category');
+          if (selectedCategory === 'all' || selectedCategory === itemCategory) {
+            htmlItem.style.display = 'block';
+            setTimeout(() => {
+              htmlItem.style.opacity = '1';
+              htmlItem.style.transform = 'scale(1)';
+            }, 50);
+            visibleCount++;
+          } else {
+            htmlItem.style.opacity = '0';
+            htmlItem.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+              htmlItem.style.display = 'none';
+            }, 300);
+          }
+        });
+
+        if (emptyState) {
+          if (visibleCount === 0) {
+            setTimeout(() => {
+              emptyState.classList.remove('hidden');
+            }, 300);
+          } else {
+            emptyState.classList.add('hidden');
+          }
+        }
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initFilters);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFilters);
+  } else {
+    initFilters();
+  }
+</script>

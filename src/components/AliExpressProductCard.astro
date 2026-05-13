@@ -9,11 +9,11 @@ interface Props {
 const { product } = Astro.props;
 ---
 
-<a href={product.data.affiliateLink} target="_blank" rel="noopener noreferrer" class="flex flex-col h-full bg-white rounded-2xl p-5 group premium-shadow border border-gray-100 transition-all duration-300 relative overflow-hidden">
+<a href={`/kitchen-finds/${product.id.replace(/\.mdx?$/, '')}`} class="flex flex-col h-full bg-white rounded-2xl p-5 group premium-shadow border border-gray-100 hover:border-brand-green/30 transition-all duration-300 relative overflow-hidden">
   
-  <!-- AliExpress Badge -->
-  <div class="absolute top-0 right-0 bg-brand-orange text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider z-10">
-    AliExpress
+  <!-- Badge -->
+  <div class="absolute top-0 right-0 bg-brand-green text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider z-10">
+    Review
   </div>
 
   <div class="relative w-full aspect-square mb-5 flex items-center justify-center p-4 bg-gray-50 rounded-xl group-hover:bg-brand-orange/5 transition-colors duration-300">
@@ -35,9 +35,9 @@ const { product } = Astro.props;
         )}
       </div>
       
-      <button class="w-full bg-brand-bg text-brand-text border border-gray-200 group-hover:bg-brand-orange group-hover:text-white group-hover:border-brand-orange font-bold py-2.5 px-4 rounded-xl text-sm transition-all duration-300 shadow-sm">
-        Buy Now
-      </button>
+      <span class="w-full block text-center bg-brand-bg text-brand-text border border-gray-200 group-hover:bg-brand-orange group-hover:text-white group-hover:border-brand-orange font-bold py-2.5 px-4 rounded-xl text-sm transition-all duration-300 shadow-sm">
+        Read Review
+      </span>
     </div>
   </div>
 </a>

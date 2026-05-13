@@ -5,12 +5,20 @@ import RecipeCard from '../components/RecipeCard.astro';
 import AliExpressProductCard from '../components/AliExpressProductCard.astro';
 import { getCollection } from 'astro:content';
 
-const recipes = await getCollection('recipes');
+const allRecipes = await getCollection('recipes');
 const products = await getCollection('kitchen-finds');
 
-// Select 3 recipes and 3 products for the main content
-const displayRecipes = recipes.filter(r => r.data.featured).slice(0, 3);
-// Use the new featured flag to display products
+// Newest featured recipes sorted by date (Fix #4)
+const displayRecipes = allRecipes
+  .filter(r => r.data.featured)
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+  .slice(0, 3);
+
+// Fallback: if no featured recipes, just use newest 3
+const recipesToShow = displayRecipes.length > 0 ? displayRecipes : allRecipes
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+  .slice(0, 3);
+
 const displayProducts = products.filter(p => p.data.featured).slice(0, 3);
 ---
 
@@ -28,7 +36,7 @@ const displayProducts = products.filter(p => p.data.featured).slice(0, 3);
       <section id="newest-recipes">
         <h2 class="text-xl font-sans font-bold uppercase tracking-wider mb-6">NEWEST RECIPES</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {displayRecipes.map(recipe => (
+          {recipesToShow.map(recipe => (
             <RecipeCard recipe={recipe} />
           ))}
         </div>

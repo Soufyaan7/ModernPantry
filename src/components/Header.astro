@@ -18,7 +18,7 @@
 
       <!-- Desktop Navigation Links -->
       <nav class="hidden md:flex space-x-6">
-        <a href="/#newest-recipes" class="text-brand-text hover:text-brand-green font-medium text-sm flex items-center gap-1">Recipes</a>
+        <a href="/recipes" class="text-brand-text hover:text-brand-green font-medium text-sm flex items-center gap-1">Recipes</a>
         <a href="/#shop-favorites" class="text-brand-text hover:text-brand-green font-medium text-sm flex items-center gap-1">Kitchen Finds</a>
       </nav>
 
@@ -79,16 +79,31 @@
         
         searchResultsList.innerHTML = '';
         if (filtered.length === 0) {
-          searchResultsList.innerHTML = '<li class="px-4 py-3 text-sm text-gray-500">No results found.</li>';
+          const li = document.createElement('li');
+          li.className = 'px-4 py-3 text-sm text-gray-500';
+          li.textContent = 'No results found.';
+          searchResultsList.appendChild(li);
         } else {
           filtered.slice(0, 8).forEach(item => {
             const li = document.createElement('li');
-            li.innerHTML = `
-              <a href="${item.url}" class="block px-4 py-3 hover:bg-brand-orange/5 transition-colors border-b border-gray-50 last:border-0">
-                <div class="text-[10px] font-bold text-brand-orange mb-0.5 uppercase tracking-wider">${item.type}</div>
-                <div class="text-sm font-medium text-gray-800 line-clamp-1">${item.title}</div>
-              </a>
-            `;
+            
+            const a = document.createElement('a');
+            // Validate URL: only allow relative paths and http/https
+            const safeUrl = item.url && /^(\/|https?:\/\/)/.test(item.url) ? item.url : '#';
+            a.href = safeUrl;
+            a.className = 'block px-4 py-3 hover:bg-orange-50 transition-colors border-b border-gray-50 last:border-0';
+
+            const typeDiv = document.createElement('div');
+            typeDiv.className = 'text-[10px] font-bold text-orange-500 mb-0.5 uppercase tracking-wider';
+            typeDiv.textContent = item.type; // textContent, not innerHTML
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'text-sm font-medium text-gray-800 truncate';
+            titleDiv.textContent = item.title; // textContent, not innerHTML
+
+            a.appendChild(typeDiv);
+            a.appendChild(titleDiv);
+            li.appendChild(a);
             searchResultsList.appendChild(li);
           });
         }
