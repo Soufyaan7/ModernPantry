@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Contact Us - The Modern Pantry">
+  <div class="max-w-4xl mx-auto mt-16 px-4 md:px-0">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-serif font-bold mb-4 text-brand-text">Get In Touch</h1>
+      <p class="text-lg text-gray-500 font-sans max-w-2xl mx-auto">
+        Have a question about a recipe, a kitchen gadget we reviewed, or just want to say hello? We'd love to hear from you.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Contact Info Sidebar -->
+      <div class="md:col-span-1 flex flex-col gap-6">
+        <div class="bg-brand-green text-white p-8 rounded-3xl premium-shadow">
+          <h3 class="text-xl font-bold uppercase tracking-wider mb-6">Contact Info</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <div class="text-xs font-bold text-brand-orange uppercase tracking-wider mb-1">Email</div>
+              <a href="mailto:hello@themodernpantry.com" class="hover:text-brand-orange transition-colors">hello@themodernpantry.com</a>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-brand-orange uppercase tracking-wider mb-1">Business Hours</div>
+              <p class="text-sm">Mon-Fri: 9AM - 5PM EST</p>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-brand-orange uppercase tracking-wider mb-1">Partnerships</div>
+              <a href="mailto:partners@themodernpantry.com" class="hover:text-brand-orange transition-colors text-sm">partners@themodernpantry.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="md:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+        <form id="contactForm" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="firstName" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">First Name</label>
+              <input type="text" id="firstName" required class="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all" />
+            </div>
+            <div>
+              <label for="lastName" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Last Name</label>
+              <input type="text" id="lastName" required class="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all" />
+            </div>
+          </div>
+
+          <div>
+            <label for="email" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Email Address</label>
+            <input type="email" id="email" required class="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all" />
+          </div>
+
+          <div>
+            <label for="subject" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Subject</label>
+            <select id="subject" class="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all text-gray-700">
+              <option value="general">General Inquiry</option>
+              <option value="recipe">Recipe Question</option>
+              <option value="product">Product Review Question</option>
+              <option value="partnership">Partnership Request</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="message" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Message</label>
+            <textarea id="message" rows="5" required class="w-full bg-[#FAFAFA] border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all resize-none"></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-brand-orange hover:bg-orange-700 text-white font-bold uppercase tracking-wider py-4 rounded-xl transition-colors shadow-md">
+            Send Message
+          </button>
+        </form>
+        
+        <!-- Success Message (Hidden by default) -->
+        <div id="successMessage" class="hidden mt-6 bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 text-center">
+          <p class="font-bold">Thank you for your message!</p>
+          <p class="text-sm mt-1">We've received your inquiry and will get back to you shortly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Simple client-side form handling since there is no backend
+  document.addEventListener('astro:page-load', () => {
+    const form = document.getElementById('contactForm');
+    const successMsg = document.getElementById('successMessage');
+    
+    if (form && successMsg) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Simulate sending
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Sending...';
+        btn.classList.add('opacity-75');
+        
+        setTimeout(() => {
+          form.reset();
+          btn.innerHTML = originalText;
+          btn.classList.remove('opacity-75');
+          successMsg.classList.remove('hidden');
+          
+          // Hide success message after 5 seconds
+          setTimeout(() => {
+            successMsg.classList.add('hidden');
+          }, 5000);
+        }, 800);
+      });
+    }
+  });
+</script>

@@ -1,0 +1,57 @@
+---
+---
+<div class="flex gap-2 text-sm font-mono font-bold countdown-timer">
+  <div class="bg-brand-orange/20 text-brand-orange px-2 py-1 rounded minutes">00</div>
+  <span>:</span>
+  <div class="bg-brand-orange/20 text-brand-orange px-2 py-1 rounded seconds">00</div>
+</div>
+
+<script>
+  function initTimers() {
+    const timers = document.querySelectorAll('.countdown-timer');
+    if (!timers.length) return;
+
+    // Set target time to 33 minutes and 0 seconds from now
+    const targetDate = new Date();
+    targetDate.setMinutes(targetDate.getMinutes() + 33);
+    targetDate.setSeconds(targetDate.getSeconds() + 0);
+
+    const updateTimers = () => {
+      const now = new Date().getTime();
+      const distance = targetDate.getTime() - now;
+
+      if (distance < 0) {
+        // Reset or stop, for demo we'll just show 00:00
+        timers.forEach(timer => {
+          const mins = timer.querySelector('.minutes');
+          const secs = timer.querySelector('.seconds');
+          if (mins) mins.textContent = '00';
+          if (secs) secs.textContent = '00';
+        });
+        return;
+      }
+
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      timers.forEach(timer => {
+        const mins = timer.querySelector('.minutes');
+        const secs = timer.querySelector('.seconds');
+        if (mins) mins.textContent = minutes.toString().padStart(2, '0');
+        if (secs) secs.textContent = seconds.toString().padStart(2, '0');
+      });
+    };
+
+    updateTimers();
+    setInterval(updateTimers, 1000);
+  }
+
+  // Initialize on load and when Astro swaps pages
+  document.addEventListener('astro:page-load', initTimers);
+  // Fallback if view transitions are not used
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTimers);
+  } else {
+    initTimers();
+  }
+</script>

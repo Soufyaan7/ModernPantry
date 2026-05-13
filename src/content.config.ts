@@ -1,20 +1,39 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { z } from 'astro/zod';
 
-const blog = defineCollection({
-	// Load Markdown and MDX files in the `src/content/blog/` directory.
-	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
-	// Type-check frontmatter using a schema
-	schema: ({ image }) =>
-		z.object({
-			title: z.string(),
-			description: z.string(),
-			// Transform string to Date object
-			pubDate: z.coerce.date(),
-			updatedDate: z.coerce.date().optional(),
-			heroImage: z.optional(image()),
-		}),
+const recipes = defineCollection({
+  loader: glob({ base: './src/content/recipes', pattern: '**/*.{md,mdx}' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      author: z.string().default("user"),
+      publishDate: z.coerce.date(),
+      category: z.string(),
+      description: z.string(),
+      ingredients: z.array(z.string()),
+      directions: z.array(z.string()),
+      relatedEquipment: z.array(z.string()).optional(),
+      image: z.string().optional(),
+      rating: z.number().optional().default(5),
+      time: z.string().optional(),
+      featured: z.boolean().default(false)
+    }),
 });
 
-export const collections = { blog };
+const kitchenFinds = defineCollection({
+  loader: glob({ base: './src/content/kitchen-finds', pattern: '**/*.{md,mdx}' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      publishDate: z.coerce.date(),
+      features: z.array(z.string()),
+      description: z.string(),
+      price: z.number(),
+      affiliateLink: z.string(),
+      shippingType: z.string(),
+      image: z.string().optional(),
+      featured: z.boolean().default(false)
+    }),
+});
+
+export const collections = { recipes, 'kitchen-finds': kitchenFinds };

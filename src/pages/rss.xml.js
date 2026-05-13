@@ -1,16 +1,17 @@
-import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
 
 export async function GET(context) {
-	const posts = await getCollection('blog');
+	const recipes = await getCollection('recipes');
 	return rss({
-		title: SITE_TITLE,
-		description: SITE_DESCRIPTION,
-		site: context.site,
-		items: posts.map((post) => ({
-			...post.data,
-			link: `/blog/${post.id}/`,
+		title: 'The Modern Pantry',
+		description: 'Kitchen Finds & Recipes',
+		site: context.site || 'http://localhost:4321',
+		items: recipes.map((recipe) => ({
+			title: recipe.data.title,
+			pubDate: recipe.data.publishDate,
+			description: recipe.data.description,
+			link: `/recipes/${recipe.id}/`,
 		})),
 	});
 }

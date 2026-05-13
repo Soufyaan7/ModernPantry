@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+
+const recipes = await getCollection('recipes');
+const products = await getCollection('kitchen-finds');
+
+const featuredRecipe = recipes[0];
+const featuredProduct = products.find(p => p.id === 'chefs-knife-set.md') || products[0];
+---
+
+<section class="mt-8 mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
+  
+  <!-- Left: Featured Recipe -->
+  <a href={`/recipes/${featuredRecipe.id}`} class="relative rounded-[2rem] overflow-hidden h-[500px] group cursor-pointer premium-shadow">
+    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" style={`background-image: url('${featuredRecipe.data.image}');`}></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+    
+    <div class="absolute bottom-0 left-0 p-10 w-full z-10">
+      <div class="inline-block bg-brand-orange text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-md">
+        {featuredRecipe.data.category}
+      </div>
+      <h2 class="text-white text-4xl md:text-5xl font-serif font-bold leading-tight mb-4 w-[90%] drop-shadow-md">
+        {featuredRecipe.data.title}
+      </h2>
+      <p class="text-white/90 text-lg font-sans font-medium border-t border-white/20 pt-4 mt-2 line-clamp-2">
+        {featuredRecipe.data.description}
+      </p>
+    </div>
+    
+    <!-- Hover Overlay Icon -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+    </div>
+  </a>
+
+  <!-- Right: Featured Product Highlight -->
+  <a href={featuredProduct.data.affiliateLink} target="_blank" rel="noopener noreferrer" class="relative rounded-[2rem] overflow-hidden h-[500px] flex group premium-shadow">
+    <!-- Split background -->
+    <div class="w-[45%] bg-brand-green h-full relative overflow-hidden">
+      <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+    <div class="w-[55%] bg-brand-bg h-full"></div>
+    
+    <div class="absolute inset-0 flex items-center p-10">
+      <!-- Left side text (on green) -->
+      <div class="w-[45%] pr-6 text-white z-10">
+        <div class="inline-block bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider mb-4 border border-white/10">
+          AliExpress Deals
+        </div>
+        <h3 class="text-3xl font-serif font-bold mb-6 leading-tight drop-shadow-sm">Upgrade Your Kitchen Arsenal</h3>
+        <span class="inline-block bg-white text-brand-green font-bold py-3 px-6 rounded-xl text-sm group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300 shadow-md">
+          Shop Now
+        </span>
+      </div>
+      
+      <!-- Center Image -->
+      <div class="absolute left-[35%] w-[45%] flex justify-center z-20 group-hover:-translate-y-2 group-hover:scale-105 transition-all duration-500">
+        <img src={featuredProduct.data.image} alt="Featured Product" class="drop-shadow-2xl max-h-[350px] object-contain" />
+      </div>
+
+      <!-- Right side text (on beige) -->
+      <div class="w-[30%] ml-auto text-brand-text z-10 pl-4 flex flex-col justify-end h-full pb-10">
+        <p class="text-xs font-sans font-bold uppercase tracking-wider mb-2 text-brand-orange">TOP RATED:</p>
+        <h3 class="text-2xl font-serif font-bold mb-2 leading-snug">{featuredProduct.data.title}</h3>
+        <p class="text-xl font-bold text-gray-800">${featuredProduct.data.price.toFixed(2)}</p>
+      </div>
+    </div>
+  </a>
+</section>
