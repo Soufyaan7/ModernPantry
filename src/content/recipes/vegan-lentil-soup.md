@@ -1,4 +1,5 @@
 ---
+id: "vegan-lentil-soup-2024"
 title: "Hearty Vegan Lentil Soup"
 author: "The Modern Pantry"
 publishDate: "2026-05-11"
@@ -26,7 +27,7 @@ image: "https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80"
 rating: 5
 time: "45 mins"
 relatedEquipment:
-  - "chefs-knife-set"
+  - "professional-chef-knives"
   - "meat-thermometer"
 featured: true
 ---

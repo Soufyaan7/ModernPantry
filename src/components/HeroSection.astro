@@ -5,7 +5,7 @@ const recipes = await getCollection('recipes');
 const products = await getCollection('kitchen-finds');
 
 // Fix #3: Match ID without extension
-const featuredProduct = products.find(p => p.id === 'chefs-knife-set') 
+const featuredProduct = products.find(p => p.id === 'professional-chef-knives') 
   || products.find(p => p.data.featured) 
   || products[0];
 
@@ -53,23 +53,29 @@ const recipeSlug = featuredRecipe.id.replace(/\.mdx?$/, '');
     
     <div class="absolute inset-0 flex items-center p-10">
       <!-- Left side text (on green) -->
-      <div class="w-[45%] pr-6 text-white z-10">
+      <div class="w-[42%] pr-6 text-white z-10">
         <div class="inline-block bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider mb-4 border border-white/10">
           AliExpress Deals
         </div>
         <h3 class="text-3xl font-serif font-bold mb-6 leading-tight drop-shadow-sm">Upgrade Your Kitchen Arsenal</h3>
-        <span class="inline-block bg-white text-brand-green font-bold py-3 px-6 rounded-xl text-sm group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300 shadow-md">
+        <span class="inline-block bg-white text-brand-green font-bold py-3 px-8 rounded-2xl text-sm group-hover:bg-brand-orange group-hover:text-white group-hover:scale-105 transition-all duration-300 shadow-lg cursor-pointer">
           Read Review
         </span>
       </div>
       
-      <!-- Center Image -->
-      <div class="absolute left-[35%] w-[45%] flex justify-center z-20 group-hover:-translate-y-2 group-hover:scale-105 transition-all duration-500">
-        <img src={featuredProduct.data.image} alt={featuredProduct.data.title} class="drop-shadow-2xl max-h-[350px] object-contain" />
-      </div>
+<!-- Product Image - Top Right with framing -->
+<div class="absolute top-6 right-6 w-[35%] flex justify-center items-center z-20 pointer-events-none">
+  <div class="relative bg-white/10 backdrop-blur-sm rounded-[2rem] p-2">
+    <img
+      src={featuredProduct.data.image}
+      alt={featuredProduct.data.title}
+      class="drop-shadow-[0_15px_30px_rgba(0,0,0,0.2)] max-h-[260px] object-contain"
+    />
+  </div>
+</div>
 
       <!-- Right side text (on beige) -->
-      <div class="w-[30%] ml-auto text-brand-text z-10 pl-4 flex flex-col justify-end h-full pb-10">
+      <div class="w-[28%] ml-auto text-brand-text z-10 pl-2 flex flex-col justify-end h-full pb-10">
         <p class="text-xs font-sans font-bold uppercase tracking-wider mb-2 text-brand-orange">TOP RATED:</p>
         <h3 class="text-2xl font-serif font-bold mb-2 leading-snug">{featuredProduct.data.title}</h3>
         <p class="text-xl font-bold text-gray-800">${featuredProduct.data.price.toFixed(2)}</p>

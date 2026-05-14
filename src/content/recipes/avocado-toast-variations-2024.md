@@ -1,4 +1,5 @@
 ---
+id: "avocado-toast-variations-2024"
 title: "Gourmet Avocado Toast Variations"
 author: "The Modern Pantry"
 publishDate: "2026-05-11"
@@ -23,7 +24,7 @@ image: "https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=800&q=80"
 rating: 5
 time: "15 mins"
 relatedEquipment:
-  - "chefs-knife-set"
+  - "professional-chef-knives"
   - "baking-mat-set"
 featured: true
 ---

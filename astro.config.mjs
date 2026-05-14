@@ -8,6 +8,8 @@ import keystatic from '@keystatic/astro';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
+import vercel from '@astrojs/vercel';
+
 const isDev = process.env.NODE_ENV !== 'production';
 
 // https://astro.build/config
@@ -38,7 +40,7 @@ export default defineConfig({
               ],
           },
       },
-	],
+    ],
 
   vite: {
     plugins: [tailwindcss()],
@@ -46,7 +48,10 @@ export default defineConfig({
       exclude: ['@keystatic/astro', 'virtual:keystatic-config'],
     },
   },
+
   image: {
     domains: ['images.unsplash.com'],
   },
+
+  adapter: vercel(),
 });

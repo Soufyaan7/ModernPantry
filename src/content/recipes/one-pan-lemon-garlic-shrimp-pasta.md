@@ -1,4 +1,5 @@
 ---
+id: "one-pan-lemon-garlic-shrimp-pasta-2024"
 title: "One-Pan Lemon Garlic Shrimp Pasta"
 author: "The Modern Pantry"
 publishDate: "2026-05-11"
@@ -26,7 +27,7 @@ image: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=800&q=80"
 rating: 5
 time: "30 mins"
 relatedEquipment:
-  - "chefs-knife-set"
+  - "professional-chef-knives"
 featured: true
 ---
 
