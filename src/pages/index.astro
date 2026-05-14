@@ -34,13 +34,7 @@ const displayProducts = products.filter(p => p.data.featured).slice(0, 3);
       
       <!-- Newest Recipes -->
       <section id="newest-recipes">
-        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
-          <div>
-            <p class="text-sm font-bold uppercase tracking-wider text-brand-orange mb-1">Cook this week</p>
-            <h2 class="text-xl font-sans font-bold uppercase tracking-wider">Newest Recipes</h2>
-          </div>
-          <a href="/recipes" class="text-sm font-bold text-brand-green hover:text-brand-orange transition-colors">View all recipes</a>
-        </div>
+        <h2 class="text-xl font-sans font-bold uppercase tracking-wider mb-6">NEWEST RECIPES</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           {recipesToShow.map(recipe => (
             <RecipeCard recipe={recipe} />
@@ -50,15 +44,9 @@ const displayProducts = products.filter(p => p.data.featured).slice(0, 3);
 
       <!-- Shop Our Favorites -->
       <section id="shop-favorites">
-        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
-          <div>
-            <p class="text-sm font-bold uppercase tracking-wider text-brand-orange mb-1">Curated gear</p>
-            <h2 class="text-xl font-sans font-bold uppercase tracking-wider">
-              Shop Our Favorites <span class="text-sm font-normal normal-case text-gray-500">(powered by AliExpress)</span>
-            </h2>
-          </div>
-          <a href="/kitchen-finds" class="text-sm font-bold text-brand-green hover:text-brand-orange transition-colors">View all finds</a>
-        </div>
+        <h2 class="text-xl font-sans font-bold uppercase tracking-wider mb-6">
+          SHOP OUR FAVORITES <span class="text-sm font-normal normal-case text-gray-500">(powered by AliExpress)</span>
+        </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           {displayProducts.map(product => (
             <AliExpressProductCard product={product} />

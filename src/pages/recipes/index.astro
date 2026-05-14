@@ -3,9 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import RecipeCard from '../../components/RecipeCard.astro';
 import { getCollection } from 'astro:content';
 
-const recipes = (await getCollection('recipes')).sort((a, b) => {
-  return new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime();
-});
+const recipes = await getCollection('recipes');
 
 // Extract unique categories
 const categories = [...new Set(recipes.map(recipe => recipe.data.category))].sort();
@@ -13,33 +11,15 @@ const categories = [...new Set(recipes.map(recipe => recipe.data.category))].sor
 
 <Layout title="All Recipes - The Modern Pantry">
   <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-    <div class="text-center mb-10">
+    <div class="text-center mb-12">
       <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-text mb-4">Our Recipes</h1>
       <p class="text-lg text-gray-500 font-sans max-w-2xl mx-auto">
         Explore our curated collection of delicious, easy-to-make recipes.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 mb-8">
-      <label class="relative block">
-        <span class="sr-only">Search recipes</span>
-        <input id="recipe-search" type="search" placeholder="Search recipes by title or category" class="w-full rounded-2xl border border-gray-200 bg-white px-5 py-4 pl-12 text-sm font-medium text-brand-text shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green" />
-        <svg class="w-5 h-5 text-gray-400 absolute left-4 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-      </label>
-
-      <label class="block">
-        <span class="sr-only">Sort recipes</span>
-        <select id="recipe-sort" class="w-full md:w-56 rounded-2xl border border-gray-200 bg-white px-5 py-4 text-sm font-bold text-brand-text shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green">
-          <option value="newest">Newest first</option>
-          <option value="time-asc">Fastest first</option>
-          <option value="rating-desc">Highest rated</option>
-          <option value="title-asc">Title A-Z</option>
-        </select>
-      </label>
-    </div>
-
     <!-- Category Filters -->
-    <div class="flex flex-wrap justify-center gap-3 mb-6">
+    <div class="flex flex-wrap justify-center gap-3 mb-12">
       <button class="category-btn bg-brand-green text-white px-6 py-2 rounded-full font-bold text-sm tracking-wider uppercase transition-colors shadow-sm" data-category="all">
         All
       </button>
@@ -50,19 +30,10 @@ const categories = [...new Set(recipes.map(recipe => recipe.data.category))].sor
       ))}
     </div>
 
-    <p id="recipe-count" class="text-center text-sm font-medium text-gray-500 mb-8">{recipes.length} recipes</p>
-
     <!-- Recipes Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="recipes-grid">
       {recipes.map(recipe => (
-        <div
-          class="recipe-item transition-all duration-300"
-          data-category={recipe.data.category}
-          data-title={recipe.data.title}
-          data-date={recipe.data.publishDate.toISOString()}
-          data-rating={recipe.data.rating}
-          data-time={recipe.data.time || '30 mins'}
-        >
+        <div class="recipe-item transition-all duration-300" data-category={recipe.data.category}>
           <RecipeCard recipe={recipe} />
         </div>
       ))}
@@ -79,59 +50,7 @@ const categories = [...new Set(recipes.map(recipe => recipe.data.category))].sor
   function initFilters() {
     const buttons = document.querySelectorAll('.category-btn');
     const items = document.querySelectorAll('.recipe-item');
-    const grid = document.getElementById('recipes-grid');
     const emptyState = document.getElementById('empty-state');
-    const searchInput = document.getElementById('recipe-search');
-    const sortSelect = document.getElementById('recipe-sort');
-    const recipeCount = document.getElementById('recipe-count');
-    let activeCategory = 'all';
-
-    if (!grid || !searchInput || !sortSelect || !recipeCount || searchInput.dataset.ready === 'true') return;
-    searchInput.dataset.ready = 'true';
-
-    const parseMinutes = value => {
-      const match = String(value || '').match(/\d+/);
-      return match ? Number(match[0]) : 999;
-    };
-
-    const applyFilters = () => {
-      const query = searchInput.value.toLowerCase().trim();
-      const sortMode = sortSelect.value;
-      const sortableItems = Array.from(items);
-
-      sortableItems.sort((a, b) => {
-        const aTitle = a.getAttribute('data-title') || '';
-        const bTitle = b.getAttribute('data-title') || '';
-        const aDate = new Date(a.getAttribute('data-date')).getTime();
-        const bDate = new Date(b.getAttribute('data-date')).getTime();
-        const aRating = Number(a.getAttribute('data-rating'));
-        const bRating = Number(b.getAttribute('data-rating'));
-        const aTime = parseMinutes(a.getAttribute('data-time'));
-        const bTime = parseMinutes(b.getAttribute('data-time'));
-
-        if (sortMode === 'time-asc') return aTime - bTime;
-        if (sortMode === 'rating-desc') return bRating - aRating;
-        if (sortMode === 'title-asc') return aTitle.localeCompare(bTitle);
-        return bDate - aDate;
-      });
-
-      let visibleCount = 0;
-
-      sortableItems.forEach(item => {
-        const itemCategory = item.getAttribute('data-category') || '';
-        const title = item.getAttribute('data-title') || '';
-        const matchesCategory = activeCategory === 'all' || activeCategory === itemCategory;
-        const matchesQuery = !query || `${title} ${itemCategory}`.toLowerCase().includes(query);
-        const isVisible = matchesCategory && matchesQuery;
-
-        item.classList.toggle('hidden', !isVisible);
-        grid.appendChild(item);
-        if (isVisible) visibleCount++;
-      });
-
-      recipeCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'recipe' : 'recipes'}`;
-      if (emptyState) emptyState.classList.toggle('hidden', visibleCount !== 0);
-    };
 
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -145,13 +64,40 @@ const categories = [...new Set(recipes.map(recipe => recipe.data.category))].sor
         btn.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
         btn.classList.add('bg-brand-green', 'text-white');
 
-        activeCategory = btn.getAttribute('data-category') || 'all';
-        applyFilters();
+        const selectedCategory = btn.getAttribute('data-category');
+        let visibleCount = 0;
+
+        items.forEach(item => {
+          // Type assertion for HTMLElement to access style
+          const htmlItem = item as HTMLElement;
+          const itemCategory = htmlItem.getAttribute('data-category');
+          if (selectedCategory === 'all' || selectedCategory === itemCategory) {
+            htmlItem.style.display = 'block';
+            setTimeout(() => {
+              htmlItem.style.opacity = '1';
+              htmlItem.style.transform = 'scale(1)';
+            }, 50);
+            visibleCount++;
+          } else {
+            htmlItem.style.opacity = '0';
+            htmlItem.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+              htmlItem.style.display = 'none';
+            }, 300);
+          }
+        });
+
+        if (emptyState) {
+          if (visibleCount === 0) {
+            setTimeout(() => {
+              emptyState.classList.remove('hidden');
+            }, 300);
+          } else {
+            emptyState.classList.add('hidden');
+          }
+        }
       });
     });
-
-    searchInput.addEventListener('input', applyFilters);
-    sortSelect.addEventListener('change', applyFilters);
   }
 
   document.addEventListener('astro:page-load', initFilters);
