@@ -53,5 +53,7 @@ export default defineConfig({
     domains: ['images.unsplash.com'],
   },
 
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
 });
