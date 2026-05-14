@@ -2,30 +2,30 @@
 ---
 <header class="w-full">
   <!-- Top Announcement Bar -->
-  <div class="bg-brand-green text-white text-xs font-semibold py-2 text-center uppercase tracking-wider">
-    PREMIUM, MODERN, ENGLISH-LANGUAGE FOR A USA
+  <div class="bg-brand-green text-white text-xs font-semibold py-2 text-center uppercase tracking-wider px-4">
+    Curated kitchen finds and practical recipes for home cooks
   </div>
 
   <!-- Main Navigation -->
   <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20">
+    <div class="flex items-center justify-between min-h-20 gap-4 py-4">
       
       <!-- Logo -->
-      <a href="/" class="flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition-opacity">
-        <svg class="w-6 h-6 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
-        <span class="font-serif text-2xl font-bold text-brand-text">The Modern Pantry</span>
+      <a href="/" class="flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition-opacity min-w-0">
+        <svg class="w-6 h-6 text-brand-green flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
+        <span class="font-serif text-xl sm:text-2xl font-bold text-brand-text truncate">The Modern Pantry</span>
       </a>
 
       <!-- Desktop Navigation Links -->
       <nav class="hidden md:flex space-x-6">
         <a href="/recipes" class="text-brand-text hover:text-brand-green font-medium text-sm flex items-center gap-1">Recipes</a>
-        <a href="/#shop-favorites" class="text-brand-text hover:text-brand-green font-medium text-sm flex items-center gap-1">Kitchen Finds</a>
+        <a href="/kitchen-finds" class="text-brand-text hover:text-brand-green font-medium text-sm flex items-center gap-1">Kitchen Finds</a>
       </nav>
 
       <!-- Search and Icons -->
       <div class="flex items-center gap-4 relative">
         <!-- Search Bar -->
-        <div class="relative hidden lg:block group">
+        <div class="relative hidden md:block group">
           <input id="searchInput" type="text" placeholder="SEARCH RECIPES & PRODUCTS" class="bg-[#EBE5D9] text-xs placeholder-gray-500 rounded-full py-2 pl-10 pr-4 w-64 focus:outline-none focus:ring-2 focus:ring-brand-green" autocomplete="off" />
           <svg class="w-4 h-4 text-gray-500 absolute left-4 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           
@@ -37,6 +37,20 @@
 
       </div>
     </div>
+
+    <div class="md:hidden pb-4 space-y-3">
+      <nav class="grid grid-cols-2 gap-2">
+        <a href="/recipes" class="text-center rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-bold text-brand-text">Recipes</a>
+        <a href="/kitchen-finds" class="text-center rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-bold text-brand-text">Kitchen Finds</a>
+      </nav>
+      <div class="relative">
+        <input id="searchInputMobile" type="text" placeholder="Search recipes & products" class="bg-[#EBE5D9] text-sm placeholder-gray-500 rounded-full py-3 pl-10 pr-4 w-full focus:outline-none focus:ring-2 focus:ring-brand-green" autocomplete="off" />
+        <svg class="w-4 h-4 text-gray-500 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <div id="searchResultsMobile" class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 hidden z-50 max-h-96 overflow-y-auto">
+          <ul id="searchResultsListMobile" class="py-2"></ul>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -44,23 +58,61 @@
   let searchData = [];
   let isFetched = false;
 
-  const initSearch = () => {
-    const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('searchResults');
-    const searchResultsList = document.getElementById('searchResultsList');
+  const loadSearchData = async () => {
+    if (isFetched) return;
 
-    if (!searchInput || !searchResults || !searchResultsList) return;
+    try {
+      const res = await fetch('/search.json');
+      searchData = await res.json();
+      isFetched = true;
+    } catch (e) {
+      console.error("Failed to load search data", e);
+    }
+  };
+
+  const renderResults = (filtered, searchResultsList) => {
+    searchResultsList.replaceChildren();
+
+    if (filtered.length === 0) {
+      const li = document.createElement('li');
+      li.className = 'px-4 py-3 text-sm text-gray-500';
+      li.textContent = 'No results found.';
+      searchResultsList.appendChild(li);
+      return;
+    }
+
+    filtered.slice(0, 8).forEach(item => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      const typeDiv = document.createElement('div');
+      const titleDiv = document.createElement('div');
+
+      const safeUrl = item.url && /^(\/|https?:\/\/)/.test(item.url) ? item.url : '#';
+      a.href = safeUrl;
+      a.className = 'block px-4 py-3 hover:bg-brand-orange/5 transition-colors border-b border-gray-50 last:border-0';
+
+      typeDiv.className = 'text-[10px] font-bold text-brand-orange mb-0.5 uppercase tracking-wider';
+      typeDiv.textContent = item.type;
+
+      titleDiv.className = 'text-sm font-medium text-gray-800 truncate';
+      titleDiv.textContent = item.title;
+
+      a.append(typeDiv, titleDiv);
+      li.appendChild(a);
+      searchResultsList.appendChild(li);
+    });
+  };
+
+  const setupSearch = (inputId, resultsId, listId) => {
+    const searchInput = document.getElementById(inputId);
+    const searchResults = document.getElementById(resultsId);
+    const searchResultsList = document.getElementById(listId);
+
+    if (!searchInput || !searchResults || !searchResultsList || searchInput.dataset.searchReady === 'true') return;
+    searchInput.dataset.searchReady = 'true';
 
     searchInput.addEventListener('focus', async () => {
-      if (!isFetched) {
-        try {
-          const res = await fetch('/search.json');
-          searchData = await res.json();
-          isFetched = true;
-        } catch (e) {
-          console.error("Failed to load search data", e);
-        }
-      }
+      await loadSearchData();
       if (searchInput.value.trim().length > 0) {
         searchResults.classList.remove('hidden');
       }
@@ -76,37 +128,7 @@
 
       if (searchData.length > 0) {
         const filtered = searchData.filter(item => item.title.toLowerCase().includes(query));
-        
-        searchResultsList.innerHTML = '';
-        if (filtered.length === 0) {
-          const li = document.createElement('li');
-          li.className = 'px-4 py-3 text-sm text-gray-500';
-          li.textContent = 'No results found.';
-          searchResultsList.appendChild(li);
-        } else {
-          filtered.slice(0, 8).forEach(item => {
-            const li = document.createElement('li');
-            
-            const a = document.createElement('a');
-            // Validate URL: only allow relative paths and http/https
-            const safeUrl = item.url && /^(\/|https?:\/\/)/.test(item.url) ? item.url : '#';
-            a.href = safeUrl;
-            a.className = 'block px-4 py-3 hover:bg-orange-50 transition-colors border-b border-gray-50 last:border-0';
-
-            const typeDiv = document.createElement('div');
-            typeDiv.className = 'text-[10px] font-bold text-orange-500 mb-0.5 uppercase tracking-wider';
-            typeDiv.textContent = item.type; // textContent, not innerHTML
-
-            const titleDiv = document.createElement('div');
-            titleDiv.className = 'text-sm font-medium text-gray-800 truncate';
-            titleDiv.textContent = item.title; // textContent, not innerHTML
-
-            a.appendChild(typeDiv);
-            a.appendChild(titleDiv);
-            li.appendChild(a);
-            searchResultsList.appendChild(li);
-          });
-        }
+        renderResults(filtered, searchResultsList);
         searchResults.classList.remove('hidden');
       }
     });
@@ -116,6 +138,11 @@
         searchResults.classList.add('hidden');
       }
     });
+  };
+
+  const initSearch = () => {
+    setupSearch('searchInput', 'searchResults', 'searchResultsList');
+    setupSearch('searchInputMobile', 'searchResultsMobile', 'searchResultsListMobile');
   };
 
   document.addEventListener('astro:page-load', initSearch);
