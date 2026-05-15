@@ -24,7 +24,7 @@ directions:
   - "Flip and finish: Carefully flip the chicken breast-side up. Cook a further 20-25 minutes until the skin is deep golden brown and a thermometer inserted into the thigh reads 75°C (165°F). Watch through the visual window — no need to open and lose heat."
   - "Rest: Transfer to a cutting board and rest uncovered for 10 minutes. This allows the juices to redistribute — never skip this step."
   - "Carve and serve: Carve at the table and serve with roasted vegetables or a simple salad."
-image: "https://images.unsplash.com/photo-1598103442097-8b74394b95c1?w=800&q=80"
+image: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=800&q=80"
 rating: 5
 time: "60 mins"
 relatedEquipment:
