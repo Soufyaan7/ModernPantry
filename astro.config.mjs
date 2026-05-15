@@ -50,7 +50,7 @@ export default defineConfig({
   },
 
   image: {
-    domains: ['images.unsplash.com'],
+    domains: ['images.unsplash.com', 'ae-pic-a1.aliexpress-media.com', 'ae01.alicdn.com'],
   },
 
   adapter: vercel(),

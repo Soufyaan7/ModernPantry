@@ -1,0 +1,235 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AliExpressProductCard from '../../components/AliExpressProductCard.astro';
+import { getCollection } from 'astro:content';
+
+const products = await getCollection('kitchen-finds');
+
+// Extract unique categories
+const categories = [...new Set(products.map(product => product.data.category))].sort();
+---
+
+<Layout title="Kitchen Finds - The Modern Pantry">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-text mb-4">Kitchen Finds</h1>
+      <p class="text-lg text-gray-500 font-sans max-w-2xl mx-auto">
+        Our hand-picked selection of the best kitchen gadgets and tools from AliExpress.
+      </p>
+    </div>
+
+    <!-- Filters Container -->
+    <div class="space-y-6 mb-12">
+      <!-- Category Filters -->
+      <div class="flex flex-col items-center">
+        <span class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Category</span>
+        <div class="flex flex-wrap justify-center gap-3">
+          <button class="filter-btn category-btn active bg-brand-green text-white px-6 py-2 rounded-full font-bold text-sm tracking-wider uppercase transition-colors shadow-sm" data-filter-type="category" data-value="all">
+            All
+          </button>
+          {categories.map(category => (
+            <button class="filter-btn category-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 px-6 py-2 rounded-full font-bold text-sm tracking-wider uppercase transition-colors shadow-sm" data-filter-type="category" data-value={category}>
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-12">
+        <!-- Price Filters -->
+        <div class="flex flex-col items-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Price Range</span>
+          <div class="flex flex-wrap justify-center gap-2">
+            <button class="filter-btn price-btn active bg-brand-green text-white px-4 py-1.5 rounded-full font-bold text-xs tracking-wider uppercase transition-colors shadow-sm" data-filter-type="price" data-value="all">
+              Any
+            </button>
+            <button class="filter-btn price-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 px-4 py-1.5 rounded-full font-bold text-xs tracking-wider uppercase transition-colors shadow-sm" data-filter-type="price" data-value="under-20">
+              Under $20
+            </button>
+            <button class="filter-btn price-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 px-4 py-1.5 rounded-full font-bold text-xs tracking-wider uppercase transition-colors shadow-sm" data-filter-type="price" data-value="20-40">
+              $20 - $40
+            </button>
+            <button class="filter-btn price-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 px-4 py-1.5 rounded-full font-bold text-xs tracking-wider uppercase transition-colors shadow-sm" data-filter-type="price" data-value="over-40">
+              Over $40
+            </button>
+          </div>
+        </div>
+
+        <!-- Shipping Filters -->
+        <div class="flex flex-col items-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Shipping</span>
+          <div class="flex flex-wrap justify-center gap-2">
+            <button class="filter-btn shipping-btn active bg-brand-green text-white px-4 py-1.5 rounded-full font-bold text-xs tracking-wider uppercase transition-colors shadow-sm" data-filter-type="shipping" data-value="all">
+              All
+            </button>
+            <button class="filter-btn shipping-btn bg-white text-gray-700 hover:bg-gray-50 border border-gray-200 px-4 py-1.5 rounded-full font-bold text-xs tracking-wider uppercase transition-colors shadow-sm" data-filter-type="shipping" data-value="Free Shipping">
+              Free Shipping
+            </button>
+          </div>
+        </div>
+
+        <!-- Sort Filter -->
+        <div class="flex flex-col items-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Sort By</span>
+          <select id="price-sort" class="bg-white border border-gray-200 rounded-full px-6 py-2 text-sm font-bold text-gray-700 outline-none hover:bg-gray-50 transition-colors shadow-sm cursor-pointer">
+            <option value="default">Default</option>
+            <option value="price-high-low">Price: High to Low</option>
+            <option value="price-low-high">Price: Low to High</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="products-grid">
+      {products.map(product => (
+        <div class="product-item transition-all duration-300" 
+             data-category={product.data.category} 
+             data-price={product.data.price}
+             data-shipping={product.data.shippingType}>
+          <AliExpressProductCard product={product} />
+        </div>
+      ))}
+    </div>
+    
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden text-center py-20">
+      <p class="text-xl text-gray-500 font-serif">No products found matching your filters.</p>
+      <button id="reset-filters" class="mt-4 text-brand-green font-bold hover:underline">Reset all filters</button>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  function initFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const items = document.querySelectorAll('.product-item');
+    const grid = document.getElementById('products-grid');
+    const sortSelect = document.getElementById('price-sort') as HTMLSelectElement;
+    const emptyState = document.getElementById('empty-state');
+    const resetButton = document.getElementById('reset-filters');
+
+    const activeFilters = {
+      category: 'all',
+      price: 'all',
+      shipping: 'all'
+    };
+
+    function applyFiltersAndSort() {
+      let visibleCount = 0;
+      const visibleItems: HTMLElement[] = [];
+
+      items.forEach(item => {
+        const htmlItem = item as HTMLElement;
+        const itemCategory = htmlItem.getAttribute('data-category');
+        const itemPrice = parseFloat(htmlItem.getAttribute('data-price') || '0');
+        const itemShipping = htmlItem.getAttribute('data-shipping');
+
+        let isVisible = true;
+
+        if (activeFilters.category !== 'all' && activeFilters.category !== itemCategory) isVisible = false;
+        
+        if (isVisible && activeFilters.price !== 'all') {
+          if (activeFilters.price === 'under-20' && itemPrice >= 20) isVisible = false;
+          else if (activeFilters.price === '20-40' && (itemPrice < 20 || itemPrice > 40)) isVisible = false;
+          else if (activeFilters.price === 'over-40' && itemPrice <= 40) isVisible = false;
+        }
+
+        if (isVisible && activeFilters.shipping !== 'all' && activeFilters.shipping !== itemShipping) isVisible = false;
+
+        if (isVisible) {
+          htmlItem.style.display = 'block';
+          setTimeout(() => {
+            htmlItem.style.opacity = '1';
+            htmlItem.style.transform = 'scale(1)';
+          }, 50);
+          visibleCount++;
+          visibleItems.push(htmlItem);
+        } else {
+          htmlItem.style.opacity = '0';
+          htmlItem.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            htmlItem.style.display = 'none';
+          }, 300);
+        }
+      });
+
+      // Handle Sorting
+      if (grid && visibleItems.length > 0) {
+        const sortValue = sortSelect.value;
+        const sortedItems = [...visibleItems].sort((a, b) => {
+          const priceA = parseFloat(a.getAttribute('data-price') || '0');
+          const priceB = parseFloat(b.getAttribute('data-price') || '0');
+          
+          if (sortValue === 'price-high-low') return priceB - priceA;
+          if (sortValue === 'price-low-high') return priceA - priceB;
+          return 0; // Default order
+        });
+
+        // Re-append sorted items to grid
+        sortedItems.forEach(item => grid.appendChild(item));
+      }
+
+      if (emptyState) {
+        if (visibleCount === 0) {
+          setTimeout(() => emptyState.classList.remove('hidden'), 300);
+        } else {
+          emptyState.classList.add('hidden');
+        }
+      }
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.getAttribute('data-filter-type') as keyof typeof activeFilters;
+        const value = btn.getAttribute('data-value') || 'all';
+
+        activeFilters[type] = value;
+
+        const groupButtons = document.querySelectorAll(`.filter-btn[data-filter-type="${type}"]`);
+        groupButtons.forEach(b => {
+          b.classList.remove('bg-brand-green', 'text-white', 'active');
+          b.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+        });
+        
+        btn.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+        btn.classList.add('bg-brand-green', 'text-white', 'active');
+
+        applyFiltersAndSort();
+      });
+    });
+
+    if (sortSelect) {
+      sortSelect.addEventListener('change', applyFiltersAndSort);
+    }
+
+    if (resetButton) {
+      resetButton.addEventListener('click', () => {
+        activeFilters.category = 'all';
+        activeFilters.price = 'all';
+        activeFilters.shipping = 'all';
+        if (sortSelect) sortSelect.value = 'default';
+
+        filterButtons.forEach(btn => {
+          const value = btn.getAttribute('data-value');
+          if (value === 'all') {
+            btn.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+            btn.classList.add('bg-brand-green', 'text-white', 'active');
+          } else {
+            btn.classList.remove('bg-brand-green', 'text-white', 'active');
+            btn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+          }
+        });
+
+        applyFiltersAndSort();
+      });
+    }
+  }
+
+  document.addEventListener('astro:page-load', initFilters);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFilters);
+  } else {
+    initFilters();
+  }
+</script>

@@ -31,7 +31,9 @@ const kitchenFinds = defineCollection({
       price: z.number(),
       affiliateLink: z.string(),
       shippingType: z.string(),
+      category: z.string().default("Gadgets"),
       image: z.string().optional(),
+      images: z.array(z.string()).optional(),
       featured: z.boolean().default(false)
     }),
 });
