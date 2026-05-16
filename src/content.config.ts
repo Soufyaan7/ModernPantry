@@ -34,7 +34,32 @@ const kitchenFinds = defineCollection({
       category: z.string().default("Gadgets"),
       image: z.string().optional(),
       images: z.array(z.string()).optional(),
-      featured: z.boolean().default(false)
+      featured: z.boolean().default(false),
+      badge: z.string().optional(),
+      originalPrice: z.number().optional(),
+      reviewCount: z.number().optional(),
+      soldCount: z.number().optional(),
+      scores: z.object({
+        quality: z.number().min(0).max(5),
+        value: z.number().min(0).max(5),
+        easeOfUse: z.number().min(0).max(5),
+        design: z.number().min(0).max(5),
+      }).optional(),
+      pros: z.array(z.string()).optional(),
+      cons: z.array(z.string()).optional(),
+      faq: z.array(z.object({
+        question: z.string(),
+        answer: z.string(),
+      })).optional(),
+      reviews: z.array(z.object({
+        author: z.string(),
+        avatar: z.string().optional(),
+        rating: z.number().min(1).max(5),
+        date: z.string(),
+        title: z.string(),
+        comment: z.string(),
+        verified: z.boolean().default(true),
+      })).optional(),
     }),
 });
 
