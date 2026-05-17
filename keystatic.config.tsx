@@ -12,7 +12,7 @@ export default config({
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
-        author: fields.text({ label: 'Author', defaultValue: 'The Modern Pantry' }),
+        author: fields.text({ label: 'Author', defaultValue: 'YumCraft' }),
         publishDate: fields.date({ label: 'Publish Date' }),
         category: fields.text({ label: 'Category' }),
         description: fields.text({ label: 'Description', multiline: true }),

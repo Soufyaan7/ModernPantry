@@ -1,7 +1,7 @@
 ---
 id: "air-fryer-crispy-chicken-wings"
 title: "Ultra-Crispy Air Fryer Chicken Wings"
-author: "The Modern Pantry"
+author: "YumCraft"
 publishDate: "2026-05-15"
 category: "Quick and Easy Meals"
 description: "Shatteringly crispy chicken wings with zero deep-frying mess — done in 25 minutes in the air fryer with a sticky honey-garlic glaze."

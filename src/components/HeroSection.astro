@@ -43,43 +43,55 @@ const recipeSlug = featuredRecipe.id.replace(/\.mdx?$/, '');
     </div>
   </a>
 
-  <!-- Right: Featured Product Highlight — links to internal review page -->
-  <a href={`/kitchen-finds/${featuredProduct.id.replace(/\.mdx?$/, '')}`} class="relative rounded-[2rem] overflow-hidden h-[500px] flex group premium-shadow">
-    <!-- Split background -->
-    <div class="w-[45%] bg-brand-green h-full relative overflow-hidden">
-      <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
-    </div>
-    <div class="w-[55%] bg-brand-bg h-full"></div>
+  <!-- Right: Featured Product Highlight -->
+  <a href={`/kitchen-finds/${featuredProduct.id.replace(/\.mdx?$/, '')}`} class="relative rounded-[2rem] overflow-hidden h-[500px] flex group premium-shadow bg-brand-green">
+    <!-- Decorative background elements -->
+    <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-black/20 to-transparent"></div>
     
-    <div class="absolute inset-0 flex items-center p-10">
-      <!-- Left side text (on green) -->
-      <div class="w-[42%] pr-6 text-white z-10">
-        <div class="inline-block bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider mb-4 border border-white/10">
-          AliExpress Deals
+    <div class="relative z-10 w-full h-full flex items-center p-8 md:p-12">
+      <!-- Content Area -->
+      <div class="w-1/2 pr-4 flex flex-col justify-center">
+        <div class="inline-block bg-white/10 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-6 border border-white/20 self-start">
+          Featured Deal
         </div>
-        <h3 class="text-3xl font-serif font-bold mb-6 leading-tight drop-shadow-sm">Upgrade Your Kitchen Arsenal</h3>
-        <span class="inline-block bg-white text-brand-green font-bold py-3 px-8 rounded-2xl text-sm group-hover:bg-brand-orange group-hover:text-white group-hover:scale-105 transition-all duration-300 shadow-lg cursor-pointer">
-          Read Review
-        </span>
+        <h3 class="text-white text-3xl md:text-4xl font-serif font-black mb-6 leading-tight">
+          Upgrade Your Kitchen Arsenal
+        </h3>
+        <div class="flex flex-col gap-1 mb-8">
+          <p class="text-white/60 text-xs font-bold uppercase tracking-widest">Selected Item:</p>
+          <p class="text-white font-bold text-lg leading-snug line-clamp-2">{featuredProduct.data.title}</p>
+          <p class="text-brand-orange text-2xl font-black mt-1">${featuredProduct.data.price.toFixed(2)}</p>
+        </div>
+        <div class="inline-flex items-center gap-2 bg-white text-brand-green font-black py-4 px-8 rounded-2xl text-sm group-hover:bg-brand-orange group-hover:text-white transition-all duration-300 shadow-xl self-start">
+          Read Full Review
+          <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+        </div>
       </div>
       
-<!-- Product Image - Top Right with framing -->
-<div class="absolute top-6 right-6 w-[35%] flex justify-center items-center z-20 pointer-events-none">
-  <div class="relative bg-white/10 backdrop-blur-sm rounded-[2rem] p-2">
-    <img
-      src={featuredProduct.data.image}
-      alt={featuredProduct.data.title}
-      class="drop-shadow-[0_15px_30px_rgba(0,0,0,0.2)] max-h-[260px] object-contain"
-    />
-  </div>
-</div>
-
-      <!-- Right side text (on beige) -->
-      <div class="w-[28%] ml-auto text-brand-text z-10 pl-2 flex flex-col justify-end h-full pb-10">
-        <p class="text-xs font-sans font-bold uppercase tracking-wider mb-2 text-brand-orange">TOP RATED:</p>
-        <h3 class="text-2xl font-serif font-bold mb-2 leading-snug">{featuredProduct.data.title}</h3>
-        <p class="text-xl font-bold text-gray-800">${featuredProduct.data.price.toFixed(2)}</p>
+      <!-- Image Area -->
+      <div class="w-1/2 h-full flex items-center justify-center relative group-hover:z-30">
+        <!-- Improved background glow/blob -->
+        <div class="absolute w-64 h-64 bg-white/10 blur-[80px] rounded-full animate-pulse"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-[3rem] scale-95 translate-x-4 border border-white/5"></div>
+        
+        <img
+          src={featuredProduct.data.image}
+          alt={featuredProduct.data.title}
+          class="relative z-20 drop-shadow-[0_25px_60px_rgba(0,0,0,0.6)] max-h-[380px] w-full object-contain transform group-hover:scale-110 group-hover:-rotate-2 transition-all duration-700 floating-animation"
+        />
       </div>
     </div>
   </a>
 </section>
+
+<style>
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+  }
+  .floating-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+</style>

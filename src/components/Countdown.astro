@@ -7,9 +7,17 @@
 </div>
 
 <script>
+  let activeInterval: number | undefined;
+
   function initTimers() {
     const timers = document.querySelectorAll('.countdown-timer');
     if (!timers.length) return;
+
+    // Clear any existing active interval to prevent concurrent leaked timers
+    if (activeInterval) {
+      clearInterval(activeInterval);
+      activeInterval = undefined;
+    }
 
     // Set target time to 33 minutes and 0 seconds from now
     const targetDate = new Date();
@@ -28,6 +36,10 @@
           if (mins) mins.textContent = '00';
           if (secs) secs.textContent = '00';
         });
+        if (activeInterval) {
+          clearInterval(activeInterval);
+          activeInterval = undefined;
+        }
         return;
       }
 
@@ -43,15 +55,9 @@
     };
 
     updateTimers();
-    setInterval(updateTimers, 1000);
+    activeInterval = window.setInterval(updateTimers, 1000);
   }
 
   // Initialize on load and when Astro swaps pages
   document.addEventListener('astro:page-load', initTimers);
-  // Fallback if view transitions are not used
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTimers);
-  } else {
-    initTimers();
-  }
 </script>

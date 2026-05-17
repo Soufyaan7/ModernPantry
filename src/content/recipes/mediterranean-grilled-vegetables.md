@@ -1,7 +1,7 @@
 ---
 id: "mediterranean-grilled-vegetables"
 title: "Mediterranean Grilled Vegetables with Herb Oil Spray"
-author: "The Modern Pantry"
+author: "YumCraft"
 publishDate: "2026-05-15"
 category: "Healthy & Sides"
 description: "Perfectly charred zucchini, bell peppers, eggplant, and cherry tomatoes, kissed with a fine mist of herbed olive oil — simple, vibrant, and irresistible."

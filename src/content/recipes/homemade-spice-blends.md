@@ -1,7 +1,7 @@
 ---
 id: "homemade-spice-blends"
 title: "5 Essential Homemade Spice Blends to Always Have on Hand"
-author: "The Modern Pantry"
+author: "YumCraft"
 publishDate: "2026-05-15"
 category: "Kitchen Basics"
 description: "Make your own smoky BBQ rub, za'atar, garam masala, Italian seasoning, and everything bagel seasoning — fresher, cheaper, and far better than store-bought."

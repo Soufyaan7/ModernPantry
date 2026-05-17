@@ -9,7 +9,7 @@ const recipes = await getCollection('recipes');
 const categories = [...new Set(recipes.map(recipe => recipe.data.category))].sort();
 ---
 
-<Layout title="All Recipes - The Modern Pantry">
+<Layout title="All Recipes - YumCraft">
   <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
     <div class="text-center mb-12">
       <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-text mb-4">Our Recipes</h1>

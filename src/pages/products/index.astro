@@ -9,7 +9,7 @@ const products = await getCollection('kitchen-finds');
 const categories = [...new Set(products.map(product => product.data.category))].sort();
 ---
 
-<Layout title="Kitchen Finds - The Modern Pantry">
+<Layout title="Kitchen Finds - YumCraft">
   <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
     <div class="text-center mb-12">
       <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-text mb-4">Kitchen Finds</h1>
@@ -139,18 +139,16 @@ const categories = [...new Set(products.map(product => product.data.category))].
 
         if (isVisible) {
           htmlItem.style.display = 'block';
-          setTimeout(() => {
-            htmlItem.style.opacity = '1';
-            htmlItem.style.transform = 'scale(1)';
-          }, 50);
+          // Force browser reflow to guarantee the transition animation triggers
+          void htmlItem.offsetHeight;
+          htmlItem.style.opacity = '1';
+          htmlItem.style.transform = 'scale(1)';
           visibleCount++;
           visibleItems.push(htmlItem);
         } else {
+          htmlItem.style.display = 'none';
           htmlItem.style.opacity = '0';
           htmlItem.style.transform = 'scale(0.95)';
-          setTimeout(() => {
-            htmlItem.style.display = 'none';
-          }, 300);
         }
       });
 
@@ -172,7 +170,7 @@ const categories = [...new Set(products.map(product => product.data.category))].
 
       if (emptyState) {
         if (visibleCount === 0) {
-          setTimeout(() => emptyState.classList.remove('hidden'), 300);
+          emptyState.classList.remove('hidden');
         } else {
           emptyState.classList.add('hidden');
         }
@@ -189,10 +187,10 @@ const categories = [...new Set(products.map(product => product.data.category))].
         const groupButtons = document.querySelectorAll(`.filter-btn[data-filter-type="${type}"]`);
         groupButtons.forEach(b => {
           b.classList.remove('bg-brand-green', 'text-white', 'active');
-          b.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+          b.classList.add('bg-white', 'text-gray-700', 'hover:bg-gray-50', 'border', 'border-gray-200');
         });
         
-        btn.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+        btn.classList.remove('bg-white', 'text-gray-700', 'hover:bg-gray-50', 'border', 'border-gray-200');
         btn.classList.add('bg-brand-green', 'text-white', 'active');
 
         applyFiltersAndSort();
@@ -213,11 +211,11 @@ const categories = [...new Set(products.map(product => product.data.category))].
         filterButtons.forEach(btn => {
           const value = btn.getAttribute('data-value');
           if (value === 'all') {
-            btn.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+            btn.classList.remove('bg-white', 'text-gray-700', 'hover:bg-gray-50', 'border', 'border-gray-200');
             btn.classList.add('bg-brand-green', 'text-white', 'active');
           } else {
             btn.classList.remove('bg-brand-green', 'text-white', 'active');
-            btn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+            btn.classList.add('bg-white', 'text-gray-700', 'hover:bg-gray-50', 'border', 'border-gray-200');
           }
         });
 

@@ -34,3 +34,19 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-orange to-[#ff8c6b];
   }
 }
+
+/* Premium Astro View Transitions Isolation */
+main {
+  view-transition-name: main-content;
+}
+
+::view-transition-old(main-content),
+::view-transition-new(main-content) {
+  animation-duration: 0.25s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+}

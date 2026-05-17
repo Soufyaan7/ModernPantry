@@ -1,7 +1,7 @@
 ---
 id: "classic-egg-salad-sandwich"
 title: "Classic Creamy Egg Salad Sandwich"
-author: "The Modern Pantry"
+author: "YumCraft"
 publishDate: "2026-05-15"
 category: "Lunch & Sandwiches"
 description: "A rich, creamy egg salad made with perfectly sliced hard-boiled eggs — ready in minutes and ideal for meal prep."

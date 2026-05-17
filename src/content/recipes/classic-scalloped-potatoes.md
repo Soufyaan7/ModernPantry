@@ -1,7 +1,7 @@
 ---
 id: "classic-scalloped-potatoes"
 title: "Classic Scalloped Potatoes au Gratin"
-author: "The Modern Pantry"
+author: "YumCraft"
 publishDate: "2026-05-15"
 category: "Side Dishes"
 description: "Layers of paper-thin potato slices baked in a garlicky cream sauce with a golden, bubbly cheese crust — the ultimate comfort side dish."

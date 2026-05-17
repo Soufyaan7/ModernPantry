@@ -1,7 +1,7 @@
 ---
 id: "four-cheese-pasta-bake"
 title: "Creamy Four-Cheese Pasta Bake"
-author: "The Modern Pantry"
+author: "YumCraft"
 publishDate: "2026-05-15"
 category: "Dinner"
 description: "A golden, bubbling pasta bake loaded with freshly grated parmesan, mozzarella, gruyère, and cheddar — the ultimate cheesy comfort dinner."

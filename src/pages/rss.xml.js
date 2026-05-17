@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 export async function GET(context) {
 	const recipes = await getCollection('recipes');
 	return rss({
-		title: 'The Modern Pantry',
+		title: 'YumCraft',
 		description: 'Kitchen Finds & Recipes',
 		site: context.site || 'http://localhost:4321',
 		items: recipes.map((recipe) => ({
