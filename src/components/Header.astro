@@ -27,7 +27,7 @@ import logo from '../assets/logo.png';
       <div class="flex items-center gap-2 sm:gap-4">
         <!-- Desktop Search Bar -->
         <div class="relative hidden lg:block group">
-          <input id="searchInput" type="text" placeholder="SEARCH RECIPES & PRODUCTS" class="bg-[#EBE5D9] text-xs placeholder-gray-500 rounded-full py-2 pl-10 pr-4 w-64 focus:outline-none focus:ring-2 focus:ring-brand-green" autocomplete="off" />
+          <input id="searchInput" type="text" placeholder="SEARCH RECIPES & PRODUCTS" onfocus="window.fetchSearchData()" oninput="window.handleDesktopSearch(this.value)" class="bg-[#EBE5D9] text-xs placeholder-gray-500 rounded-full py-2 pl-10 pr-4 w-64 focus:outline-none focus:ring-2 focus:ring-brand-green" autocomplete="off" />
           <svg class="w-4 h-4 text-gray-500 absolute left-4 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           
           <!-- Search Results Dropdown -->
@@ -37,12 +37,12 @@ import logo from '../assets/logo.png';
         </div>
 
         <!-- Mobile Search Toggle Button (Visible below lg screens) -->
-        <button id="mobileSearchToggle" class="block lg:hidden text-brand-text hover:text-brand-green p-2 focus:outline-none transition-colors rounded-full hover:bg-gray-100" aria-label="Toggle Search">
+        <button id="mobileSearchToggle" onclick="window.toggleMobileSearch()" class="block lg:hidden text-brand-text hover:text-brand-green p-2 focus:outline-none transition-colors rounded-full hover:bg-gray-100" aria-label="Toggle Search">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
         </button>
 
         <!-- Hamburger Drawer Button (Visible below md screens) -->
-        <button id="mobileMenuToggle" class="block md:hidden text-brand-text hover:text-brand-green p-2 focus:outline-none transition-colors rounded-full hover:bg-gray-100" aria-label="Toggle Menu">
+        <button id="mobileMenuToggle" onclick="window.toggleMobileMenu()" class="block md:hidden text-brand-text hover:text-brand-green p-2 focus:outline-none transition-colors rounded-full hover:bg-gray-100" aria-label="Toggle Menu">
           <svg id="menuIcon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
@@ -57,7 +57,7 @@ import logo from '../assets/logo.png';
   <!-- Mobile Search Overlay (Slide Down underneath header) -->
   <div id="mobileSearchOverlay" class="absolute top-20 left-0 w-full bg-white shadow-lg border-t border-gray-100 px-4 py-3 z-40 hidden transition-all duration-300">
     <div class="relative max-w-xl mx-auto">
-      <input id="mobileSearchInput" type="text" placeholder="Search recipes & products..." class="w-full bg-gray-50 text-sm placeholder-gray-500 rounded-full py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-green border border-gray-200" autocomplete="off" />
+      <input id="mobileSearchInput" type="text" placeholder="Search recipes & products..." oninput="window.handleMobileSearch(this.value)" class="w-full bg-gray-50 text-sm placeholder-gray-500 rounded-full py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-green border border-gray-200" autocomplete="off" />
       <svg class="w-5 h-5 text-gray-500 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
     </div>
     <!-- Search Results for Mobile -->
@@ -69,11 +69,11 @@ import logo from '../assets/logo.png';
   <!-- Mobile Drawer Menu (Slide Down, full screen overlay below navigation) -->
   <div id="mobileMenuDrawer" class="fixed inset-x-0 top-32 bottom-0 bg-white/95 backdrop-blur-lg border-t border-gray-100 z-30 hidden flex-col px-6 py-8 justify-between shadow-2xl transition-all duration-300">
     <nav class="flex flex-col gap-6">
-      <a href="/recipes" class="text-brand-text hover:text-brand-green font-serif text-2xl font-black border-b border-gray-50 pb-4 flex justify-between items-center group">
+      <a href="/recipes" onclick="window.toggleMobileMenu()" class="text-brand-text hover:text-brand-green font-serif text-2xl font-black border-b border-gray-50 pb-4 flex justify-between items-center group">
         <span>Recipes</span>
         <svg class="w-5 h-5 text-brand-orange transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
       </a>
-      <a href="/#shop-favorites" class="text-brand-text hover:text-brand-green font-serif text-2xl font-black border-b border-gray-50 pb-4 flex justify-between items-center group">
+      <a href="/#shop-favorites" onclick="window.toggleMobileMenu()" class="text-brand-text hover:text-brand-green font-serif text-2xl font-black border-b border-gray-50 pb-4 flex justify-between items-center group">
         <span>Kitchen Finds</span>
         <svg class="w-5 h-5 text-brand-orange transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
       </a>
@@ -82,10 +82,10 @@ import logo from '../assets/logo.png';
     <!-- Footer Links inside Mobile Menu -->
     <div class="flex flex-col gap-4 border-t border-gray-100 pt-8">
       <div class="flex flex-wrap gap-x-6 gap-y-2 text-xs text-gray-400 font-bold uppercase tracking-wider">
-        <a href="/about/affiliate-disclosure" class="hover:text-brand-green">Disclosure</a>
-        <a href="/about/privacy-policy" class="hover:text-brand-green">Privacy Policy</a>
-        <a href="/about/contact" class="hover:text-brand-green">Contact Us</a>
-        <a href="/about/shipping" class="hover:text-brand-green">Shipping Info</a>
+        <a href="/about/affiliate-disclosure" onclick="window.toggleMobileMenu()" class="hover:text-brand-green">Disclosure</a>
+        <a href="/about/privacy-policy" onclick="window.toggleMobileMenu()" class="hover:text-brand-green">Privacy Policy</a>
+        <a href="/about/contact" onclick="window.toggleMobileMenu()" class="hover:text-brand-green">Contact Us</a>
+        <a href="/about/shipping" onclick="window.toggleMobileMenu()" class="hover:text-brand-green">Shipping Info</a>
       </div>
       <p class="text-xs text-gray-400">&copy; 2026 YumCraft. All rights reserved.</p>
     </div>
@@ -96,161 +96,156 @@ import logo from '../assets/logo.png';
   let searchData = [];
   let isFetched = false;
 
-  const initSearchAndNav = () => {
-    // Desktop Search
-    const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('searchResults');
-    const searchResultsList = document.getElementById('searchResultsList');
+  // Global declarations for TypeScript IDE type-safety
+  declare global {
+    interface Window {
+      fetchSearchData: () => Promise<void>;
+      toggleMobileSearch: () => Promise<void>;
+      toggleMobileMenu: () => void;
+      handleDesktopSearch: (value: string) => void;
+      handleMobileSearch: (value: string) => void;
+    }
+  }
 
-    // Mobile Search
-    const mobileSearchToggle = document.getElementById('mobileSearchToggle');
+  // Fetch Helper
+  window.fetchSearchData = async () => {
+    if (!isFetched) {
+      try {
+        const res = await fetch('/search.json');
+        searchData = await res.json();
+        isFetched = true;
+      } catch (e) {
+        console.error("Failed to load search data", e);
+      }
+    }
+  };
+
+  // Render Helper
+  const renderResults = (query: string, list: HTMLElement, dropdown: HTMLElement) => {
+    if (query.length === 0) {
+      dropdown.classList.add('hidden');
+      return;
+    }
+
+    if (searchData.length > 0) {
+      const filtered = searchData.filter(item => item.title.toLowerCase().includes(query));
+      
+      list.innerHTML = '';
+      if (filtered.length === 0) {
+        const li = document.createElement('li');
+        li.className = 'px-4 py-3 text-sm text-gray-500';
+        li.textContent = 'No results found.';
+        list.appendChild(li);
+      } else {
+        filtered.slice(0, 8).forEach(item => {
+          const li = document.createElement('li');
+          
+          const a = document.createElement('a');
+          const safeUrl = item.url && /^(\/|https?:\/\/)/.test(item.url) ? item.url : '#';
+          a.href = safeUrl;
+          a.className = 'block px-4 py-3 hover:bg-orange-50 transition-colors border-b border-gray-50 last:border-0';
+
+          const typeDiv = document.createElement('div');
+          typeDiv.className = 'text-[10px] font-bold text-orange-500 mb-0.5 uppercase tracking-wider';
+          typeDiv.textContent = item.type;
+
+          const titleDiv = document.createElement('div');
+          titleDiv.className = 'text-sm font-medium text-gray-800 truncate';
+          titleDiv.textContent = item.title;
+
+          a.appendChild(typeDiv);
+          a.appendChild(titleDiv);
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+      }
+      dropdown.classList.remove('hidden');
+    }
+  };
+
+  // Desktop search input handler
+  window.handleDesktopSearch = (value: string) => {
+    const list = document.getElementById('searchResultsList');
+    const dropdown = document.getElementById('searchResults');
+    if (list && dropdown) {
+      renderResults(value.toLowerCase().trim(), list, dropdown);
+    }
+  };
+
+  // Mobile search input handler
+  window.handleMobileSearch = (value: string) => {
+    const list = document.getElementById('mobileSearchResultsList');
+    const dropdown = document.getElementById('mobileSearchResults');
+    if (list && dropdown) {
+      renderResults(value.toLowerCase().trim(), list, dropdown);
+    }
+  };
+
+  // Mobile search overlay toggle
+  window.toggleMobileSearch = async () => {
     const mobileSearchOverlay = document.getElementById('mobileSearchOverlay');
+    const mobileMenuDrawer = document.getElementById('mobileMenuDrawer');
+    const menuIcon = document.getElementById('menuIcon');
+    const closeIcon = document.getElementById('closeIcon');
     const mobileSearchInput = document.getElementById('mobileSearchInput') as HTMLInputElement;
-    const mobileSearchResults = document.getElementById('mobileSearchResults');
-    const mobileSearchResultsList = document.getElementById('mobileSearchResultsList');
 
-    // Mobile Menu
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    if (!mobileSearchOverlay) return;
+
+    await window.fetchSearchData();
+    mobileSearchOverlay.classList.toggle('hidden');
+    
+    if (!mobileSearchOverlay.classList.contains('hidden')) {
+      // Hide menu drawer if open
+      mobileMenuDrawer?.classList.add('hidden');
+      menuIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+      
+      setTimeout(() => mobileSearchInput?.focus(), 50);
+    }
+  };
+
+  // Mobile Menu Drawer Toggle
+  window.toggleMobileMenu = () => {
+    const mobileSearchOverlay = document.getElementById('mobileSearchOverlay');
     const mobileMenuDrawer = document.getElementById('mobileMenuDrawer');
     const menuIcon = document.getElementById('menuIcon');
     const closeIcon = document.getElementById('closeIcon');
 
-    if (!searchInput) return;
+    if (!mobileMenuDrawer) return;
 
-    // Fetch Helper
-    const fetchData = async () => {
-      if (!isFetched) {
-        try {
-          const res = await fetch('/search.json');
-          searchData = await res.json();
-          isFetched = true;
-        } catch (e) {
-          console.error("Failed to load search data", e);
-        }
-      }
-    };
+    mobileMenuDrawer.classList.toggle('hidden');
+    if (!mobileMenuDrawer.classList.contains('hidden')) {
+      // Hide search overlay if open
+      mobileSearchOverlay?.classList.add('hidden');
+      
+      menuIcon?.classList.add('hidden');
+      closeIcon?.classList.remove('hidden');
+    } else {
+      menuIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+    }
+  };
 
-    // Desktop search focus
-    searchInput.addEventListener('focus', async () => {
-      await fetchData();
-      if (searchInput.value.trim().length > 0) {
-        searchResults?.classList.remove('hidden');
-      }
-    });
-
-    // Mobile search toggle
-    mobileSearchToggle?.addEventListener('click', async () => {
-      await fetchData();
-      mobileSearchOverlay?.classList.toggle('hidden');
-      if (!mobileSearchOverlay?.classList.contains('hidden')) {
-        // Hide menu drawer if open
-        mobileMenuDrawer?.classList.add('hidden');
-        menuIcon?.classList.remove('hidden');
-        closeIcon?.classList.add('hidden');
-        
-        mobileSearchInput?.focus();
-      }
-    });
-
-    // Mobile Menu Toggle
-    mobileMenuToggle?.addEventListener('click', () => {
-      mobileMenuDrawer?.classList.toggle('hidden');
-      if (!mobileMenuDrawer?.classList.contains('hidden')) {
-        // Hide search overlay if open
-        mobileSearchOverlay?.classList.add('hidden');
-        
-        menuIcon?.classList.add('hidden');
-        closeIcon?.classList.remove('hidden');
-      } else {
-        menuIcon?.classList.remove('hidden');
-        closeIcon?.classList.add('hidden');
-      }
-    });
-
-    // Render helper
-    const renderResults = (query: string, list: HTMLElement, dropdown: HTMLElement) => {
-      if (query.length === 0) {
-        dropdown.classList.add('hidden');
-        return;
-      }
-
-      if (searchData.length > 0) {
-        const filtered = searchData.filter(item => item.title.toLowerCase().includes(query));
-        
-        list.innerHTML = '';
-        if (filtered.length === 0) {
-          const li = document.createElement('li');
-          li.className = 'px-4 py-3 text-sm text-gray-500';
-          li.textContent = 'No results found.';
-          list.appendChild(li);
-        } else {
-          filtered.slice(0, 8).forEach(item => {
-            const li = document.createElement('li');
-            
-            const a = document.createElement('a');
-            const safeUrl = item.url && /^(\/|https?:\/\/)/.test(item.url) ? item.url : '#';
-            a.href = safeUrl;
-            a.className = 'block px-4 py-3 hover:bg-orange-50 transition-colors border-b border-gray-50 last:border-0';
-
-            const typeDiv = document.createElement('div');
-            typeDiv.className = 'text-[10px] font-bold text-orange-500 mb-0.5 uppercase tracking-wider';
-            typeDiv.textContent = item.type;
-
-            const titleDiv = document.createElement('div');
-            titleDiv.className = 'text-sm font-medium text-gray-800 truncate';
-            titleDiv.textContent = item.title;
-
-            a.appendChild(typeDiv);
-            a.appendChild(titleDiv);
-            li.appendChild(a);
-            list.appendChild(li);
-          });
-        }
-        dropdown.classList.remove('hidden');
-      }
-    };
-
-    // Desktop Search Input
-    searchInput.addEventListener('input', (e) => {
-      const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
-      if (searchResultsList && searchResults) {
-        renderResults(query, searchResultsList, searchResults);
-      }
-    });
-
-    // Mobile Search Input
-    mobileSearchInput?.addEventListener('input', (e) => {
-      const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
-      if (mobileSearchResultsList && mobileSearchResults) {
-        renderResults(query, mobileSearchResultsList, mobileSearchResults);
-      }
-    });
-
-    // Click outside handler
+  // Resilient click-outside event listeners on boot (bind once to document)
+  const setupGlobalListeners = () => {
     document.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
-      if (!searchInput.contains(target) && !searchResults?.contains(target)) {
-        searchResults?.classList.add('hidden');
+      
+      const searchInput = document.getElementById('searchInput');
+      const searchResults = document.getElementById('searchResults');
+      const mobileSearchOverlay = document.getElementById('mobileSearchOverlay');
+      const mobileSearchToggle = document.getElementById('mobileSearchToggle');
+
+      if (searchInput && searchResults && !searchInput.contains(target) && !searchResults.contains(target)) {
+        searchResults.classList.add('hidden');
       }
-      if (mobileSearchOverlay && !mobileSearchOverlay.contains(target) && !mobileSearchToggle?.contains(target)) {
+      
+      if (mobileSearchOverlay && mobileSearchToggle && !mobileSearchOverlay.contains(target) && !mobileSearchToggle.contains(target)) {
         mobileSearchOverlay.classList.add('hidden');
       }
     });
-
-    // Close mobile drawer on link click
-    mobileMenuDrawer?.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenuDrawer.classList.add('hidden');
-        menuIcon?.classList.remove('hidden');
-        closeIcon?.classList.add('hidden');
-      });
-    });
   };
 
-  document.addEventListener('astro:page-load', initSearchAndNav);
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSearchAndNav);
-  } else {
-    initSearchAndNav();
-  }
+  // Run boot setup once
+  setupGlobalListeners();
 </script>
