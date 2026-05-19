@@ -9,7 +9,7 @@ const products = await getCollection('kitchen-finds');
 const categories = [...new Set(products.map(product => product.data.category))].sort();
 ---
 
-<Layout title="Kitchen Finds - YumCraft">
+<Layout title="Kitchen Finds - Le Savoury">
   <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
     <div class="text-center mb-12">
       <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-text mb-4">Kitchen Finds</h1>

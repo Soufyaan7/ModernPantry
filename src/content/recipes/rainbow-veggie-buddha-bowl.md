@@ -1,7 +1,7 @@
 ---
 id: "rainbow-veggie-buddha-bowl"
 title: "Rainbow Veggie Buddha Bowl with Tahini Dressing"
-author: "YumCraft"
+author: "Le Savoury"
 publishDate: "2026-05-15"
 category: "Healthy & Bowls"
 description: "A vibrant, nourishing bowl packed with diced colorful vegetables, roasted chickpeas, and a creamy tahini dressing — meal prep in 30 minutes."

@@ -1,7 +1,7 @@
 ---
 id: "perfect-pour-over-coffee"
 title: "The Perfect Pour-Over Coffee — Barista Method"
-author: "YumCraft"
+author: "Le Savoury"
 publishDate: "2026-05-15"
 category: "Drinks & Beverages"
 description: "Brew a flawless, café-quality pour-over coffee at home using the 1:15 ratio method — clean, bright, and intensely flavorful."

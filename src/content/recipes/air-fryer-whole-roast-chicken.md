@@ -1,7 +1,7 @@
 ---
 id: "air-fryer-whole-roast-chicken"
 title: "Juicy Whole Roast Chicken in the Air Fryer"
-author: "YumCraft"
+author: "Le Savoury"
 publishDate: "2026-05-15"
 category: "Dinner"
 description: "A golden, crackling-skinned whole roast chicken cooked in the air fryer in under an hour — crispy outside, incredibly juicy inside, zero fuss."

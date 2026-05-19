@@ -1,7 +1,7 @@
 ---
 id: "japanese-steamed-egg-custard"
 title: "Japanese Steamed Egg Custard (Chawanmushi)"
-author: "YumCraft"
+author: "Le Savoury"
 publishDate: "2026-05-15"
 category: "Breakfast & Brunch"
 description: "A silky, savory Japanese steamed egg custard packed with shrimp, mushrooms, and umami dashi broth — elegant and surprisingly easy."

@@ -1,7 +1,7 @@
 ---
 id: "garlic-butter-pasta-aglio-olio"
 title: "Authentic Pasta Aglio e Olio (Garlic & Oil Pasta)"
-author: "YumCraft"
+author: "Le Savoury"
 publishDate: "2026-05-15"
 category: "Quick and Easy Meals"
 description: "Rome's most iconic 5-ingredient pasta — golden garlic, chili flakes, silky pasta water emulsion, and a shower of parmesan. Ready in 15 minutes."
